@@ -1,42 +1,8 @@
-rtl-sdr
-turns your Realtek RTL2832 based DVB dongle into a SDR receiver
-======================================================================
+# RTL-SDR flow and control using UDP
 
-rtl_udp is a copy of rtl_fm with a special feature: It opens a udp control port (currently fixed to 6020) which takes commands like changing the frequency or mode. No need to restart :)
-
-**[Credits & original code by Olgierd Pilarczyk](http://qi.reddit.com/user/olgierd)**
-
-##Usage:
-
-python script **udpclient.py** for easy operation included.
-
-**possible commands:**
-
-* freq (./udpclient.py freq 101900000)
-* mode (./udpclient.py mode 0 (for fm))
-  * 0 = FM
-  * 1 = AM
-  * 2 = USB
-  * 3 = LSB
-* squelch (./udpclient.py squelch 0)
-  * 0 = OFF
-  * n = Value
-* gain (./udpclient.py gain auto)
-  * auto = Automatic
-  * n = Gainvalue; 195 = 19.5db
-* agc (./udpclient.py agc 1)
-  * 0 = OFF
-  * 1 = ON 
+rtl_udp -f 105500000 -s 2048000 -g 20 -p 1240 -u 192.168.2.10:9999
 
 
-##Todo:
+Set gain (for example, 20.0 dB, which equals 200 in tenths)
 
-* configureable address & port
-* UDP streaming for PCM data
-
-##Original RTL-SDR Source:
-
-For more information see:
-http://sdr.osmocom.org/trac/wiki/rtl-sdr
-
-
+printf "\x03\x00\x00\x00\xC8" | nc -u 127.0.0.1 1235
