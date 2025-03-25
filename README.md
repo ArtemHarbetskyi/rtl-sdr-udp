@@ -2,15 +2,24 @@
 ### This is a fork of the project from https://github.com/sysrun/rtl-sdr, the approach for udp is completely rewritten.
 
 
-cd rtl-sdr-udp/
-mkdir build
-cd build
-cmake ../
-make
-sudo make install
-sudo ldconfig
+```cd rtl-sdr-udp/```
 
-```rtl_udp -f 105500000 -s 2048000 -g 20 -p 1234 -u 0.0.0.0:9999```
+```mkdir build```
+
+```cd build```
+
+```cmake ../```
+
+```make```
+
+```sudo make install```
+
+```sudo ldconfig```
+
+```rtl_udp -f 105500000 -s 2048000 -g 20 -p 1234 -u 0.0.0.0:9999``` 
+
+
+
 
 
 Set gain (for example, 20.0 dB, which equals 200 in tenths)
