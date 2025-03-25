@@ -47,6 +47,8 @@ add_library(rtlsdr_static STATIC
     tuner_r82xx.c
 )
 
+include_directories(${CMAKE_SOURCE_DIR}/convenience)
+
 if(WIN32)
 add_library(libgetopt_static STATIC
     getopt/getopt.c
@@ -71,7 +73,8 @@ add_executable(rtl_sdr rtl_sdr.c)
 add_executable(rtl_tcp rtl_tcp.c)
 add_executable(rtl_test rtl_test.c)
 add_executable(rtl_fm rtl_fm.c)
-add_executable(rtl_udp rtl_udp.c)
+#add_executable(rtl_udp rtl_udp.c)
+add_executable(rtl_udp rtl_udp.c ../convenience/convenience.c)
 add_executable(rtl_eeprom rtl_eeprom.c)
 add_executable(rtl_adsb rtl_adsb.c)
 add_executable(rtl_power rtl_power.c)
