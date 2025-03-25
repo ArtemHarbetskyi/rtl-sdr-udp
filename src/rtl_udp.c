@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    // Инициализация устройства
+    // Initializing the device
     r = rtlsdr_open(&dev, dev_index);
     if (r < 0) {
         fprintf(stderr, "Failed to open rtlsdr device #%d.\n", dev_index);
@@ -153,7 +153,7 @@ int main(int argc, char **argv) {
     verbose_gain_set(dev, gain);
     verbose_reset_buffer(dev);
 
-    // Настройка сигналов
+    // Setting up signals
     sigact.sa_handler = sighandler;
     sigemptyset(&sigact.sa_mask);
     sigact.sa_flags = 0;
@@ -162,7 +162,7 @@ int main(int argc, char **argv) {
     sigaction(SIGQUIT, &sigact, NULL);
     sigaction(SIGPIPE, &sigact, NULL);
 
-    // Создание UDP-сокета для данных
+    // Creating a UDP socket for data
     sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (sockfd < 0) {
         fprintf(stderr, "socket error\n");
@@ -181,13 +181,13 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    // Настройка адреса получателя
+    // Setting up the recipient's address
     memset(&dest_addr, 0, sizeof(dest_addr));
     dest_addr.sin_family = AF_INET;
     dest_addr.sin_addr.s_addr = inet_addr(dest_ip);
     dest_addr.sin_port = htons(dest_port);
 
-    // Создание UDP-сокета для управления
+    // Creating a UDP socket for control
     ctrl_sockfd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     if (ctrl_sockfd < 0) {
         fprintf(stderr, "control socket error\n");
@@ -199,7 +199,8 @@ int main(int argc, char **argv) {
     memset(&ctrl_addr, 0, sizeof(ctrl_addr));
     ctrl_addr.sin_family = AF_INET;
     ctrl_addr.sin_addr.s_addr = INADDR_ANY;
-    ctrl_addr.sin_port = htons(port + 1); // Порт для команд
+    ctrl_addr.sin_port = htons(port + 1); // Port for commands
+    // TODO: ! add port reopening for management!!!!
     if (bind(ctrl_sockfd, (struct sockaddr *)&ctrl_addr, sizeof(ctrl_addr)) < 0) {
         fprintf(stderr, "control bind error\n");
         close(sockfd);
@@ -208,13 +209,13 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    // Запуск потоков
+    // Starting Streams
     pthread_create(&udp_thread, NULL, udp_server_thread, dev);
     pthread_create(&ctrl_thread, NULL, udp_control_thread, dev);
 
     fprintf(stderr, "Streaming to %s:%d, control on port %d\n", dest_ip, dest_port, port + 1);
 
-    // Ожидание завершения
+    // Waiting for completion
     pthread_join(udp_thread, NULL);
     pthread_join(ctrl_thread, NULL);
 
