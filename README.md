@@ -1,6 +1,15 @@
 # RTL-SDR flow and control using UDP
 ### This is a fork of the project from https://github.com/sysrun/rtl-sdr, the approach for udp is completely rewritten.
 
+
+cd rtl-sdr-udp/
+mkdir build
+cd build
+cmake ../
+make
+sudo make install
+sudo ldconfig
+
 ```rtl_udp -f 105500000 -s 2048000 -g 20 -p 1234 -u 0.0.0.0:9999```
 
 
